@@ -41,8 +41,8 @@ class GuessesController < ApplicationController
           # binding.pry
           @round.update_cards(@card)
           # binding.pry
-          if @round.old.length > 0
-            next_card_id = @round.old.sample
+          if @round.cards_not_answered.length > 0
+            next_card_id = @round.cards_not_answered.sample
             format.html {redirect_to "/cards/#{next_card_id}/play/#{@round.id}"}
           #pick a random card_id from the @round.cards and redirect there
           else
