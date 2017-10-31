@@ -38,11 +38,16 @@ class GuessesController < ApplicationController
         if result == true
           #guess was correct
           #remove the card from the @round.cards
-          binding.pry
-          @round.cards.delete(@card.id)
-          binding.pry
+          # binding.pry
+          @round.update_cards(@card)
+          # binding.pry
+          if @round.old.length > 0
+            next_card_id = @round.old.sample
+            format.html {redirect_to "/cards/#{next_card_id}/play/#{@round.id}"}
           #pick a random card_id from the @round.cards and redirect there
-          format.html { redirect_to @decks, notice: 'Guess was successfully created.' }
+          else
+            format.html {redirect_to @cards}
+          end
         end
       else
         format.html { render :new }

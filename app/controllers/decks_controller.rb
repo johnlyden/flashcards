@@ -18,9 +18,6 @@ class DecksController < ApplicationController
     @user = User.first
     @round = Round.create({user_id: @user.id, deck_id: @deck.id})
     
-    # adds all fo the card id's to an array stored in the round
-    @round.setup(@deck)
-
     redirect_to "/cards/#{@deck.cards.first.id}/play/#{@round.id}"
   end
 

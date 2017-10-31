@@ -3,18 +3,22 @@ class Round < ActiveRecord::Base
     belongs_to :user
     belongs_to :deck
     has_many :guesses
-    attr_accessor :old_cards
+    attr_accessor :old_cards, :old
 
-    def setup(deck)
+    after_initialize :init
 
-        # self.old_cards = []
-
-        # deck.cards.each do |card|
-        #     self.old_cards.push(card.id)
-        # end
-        # binding.pry
-        # @cards_answered_wrong = [Guess.create({card_id: @deck.cards.first, correct: true})]
-    #     # push the cardsthat were anwered wrong in to this array so we can keep track fo them
-    #     # @cards_answered_wrong = []
+    def init 
+        @old = []
+        self.deck.cards.each do |card|
+            @old.push(card.id)
+        end
     end
+
+    def update_cards(answered_card)
+       @old.delete(answered_card.id) 
+       binding.pry
+    end
+
+
+
 end
