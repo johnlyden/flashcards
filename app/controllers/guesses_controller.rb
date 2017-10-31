@@ -26,32 +26,28 @@ class GuessesController < ApplicationController
   # POST /guesses
   # POST /guesses.json
   def create
-    @guess = Guess.new(guess_params)
+    @guess = Guess.create(guess_params)
     @card = Card.find(guess_params[:card_id]);
     @round = Round.find(guess_params[:round_id])
 
     respond_to do |format|
-      if @guess.save
-        # check if the guess was correct - wil return true or false and save it in result
-        result = @card.check_guess(@guess)
-        
-        if result == true
-          #guess was correct
-          #remove the card from the @round.cards
-          # binding.pry
-          @round.update_cards(@card)
-          # binding.pry
-          if @round.cards_not_answered.length > 0
-            next_card_id = @round.cards_not_answered.sample
-            format.html {redirect_to "/cards/#{next_card_id}/play/#{@round.id}"}
-          #pick a random card_id from the @round.cards and redirect there
-          else
-            format.html {redirect_to @cards}
-          end
+
+      result = @card.check_guess(@guess)
+      
+      if result == true
+        @guess.update_attributes(correct: true)
+        session[:cards_not_answered].delete(@card.id)
+
+        if session[:cards_not_answered].length > 0
+          
+          next_card_id = session[:cards_not_answered].sample
+          format.html {redirect_to "/cards/#{next_card_id}/play/#{@round.id}"}
+        else
+          format.html {redirect_to "/rounds/#{@round.id}/results"}
         end
       else
-        format.html { render :new }
-        format.json { render json: @guess.errors, status: :unprocessable_entity }
+          next_card_id = session[:cards_not_answered].sample
+          format.html {redirect_to "/cards/#{next_card_id}/play/#{@round.id}"} 
       end
     end
   end

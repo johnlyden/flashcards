@@ -1,3 +1,4 @@
+require 'pry'
 class RoundsController < ApplicationController
   before_action :set_round, only: [:show, :edit, :update, :destroy]
 
@@ -7,6 +8,11 @@ class RoundsController < ApplicationController
     @rounds = Round.all
   end
 
+  def show_results
+    @round = Round.find(params[:id])
+    @score = @round.deck.cards.length.to_f / @round.guesses.length.to_f * 100 
+    render "rounds/results"
+  end
   # GET /rounds/1
   # GET /rounds/1.json
   def show
@@ -20,6 +26,7 @@ class RoundsController < ApplicationController
   # GET /rounds/1/edit
   def edit
   end
+
 
   # POST /rounds
   # POST /rounds.json

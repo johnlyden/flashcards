@@ -12,6 +12,7 @@ Rails.application.routes.draw do
 
   get 'decks/:id/setup' => 'decks#setup_game', as: :setup_game
   get 'cards/:id/play/:round_id' => 'cards#play_card', as: :play_card
+  get 'rounds/:id/results' => 'rounds#show_results', as: :show_results
   # post 'cards/:id/check' => 'cards#check', as :check_card
 
   # Example of regular route:

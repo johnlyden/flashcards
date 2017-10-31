@@ -17,7 +17,7 @@ class DecksController < ApplicationController
     @deck = Deck.find(params[:id]) 
     @user = User.first
     @round = Round.create({user_id: @user.id, deck_id: @deck.id})
-    
+    session[:cards_not_answered] = @deck.cards.map { |card|  card.id } 
     redirect_to "/cards/#{@deck.cards.first.id}/play/#{@round.id}"
   end
 
