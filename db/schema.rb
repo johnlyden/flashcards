@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(version: 20171030032534) do
   create_table "guesses", force: :cascade do |t|
     t.boolean  "correct",    default: false
     t.integer  "card_id"
+    t.text     "text"
     t.integer  "round_id"
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false

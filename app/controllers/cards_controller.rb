@@ -10,6 +10,16 @@ class CardsController < ApplicationController
   # GET /cards/1
   # GET /cards/1.json
   def show
+    @guess = Guess.new
+    @round = params[:round_id]
+  end
+
+
+  def play_card
+    @guess = Guess.new
+    @card = Card.find(params[:id])
+    @round = Round.find(params[:round_id]) 
+    render :show
   end
 
   # GET /cards/new

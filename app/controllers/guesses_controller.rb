@@ -1,3 +1,5 @@
+require 'pry'
+
 class GuessesController < ApplicationController
   before_action :set_guess, only: [:show, :edit, :update, :destroy]
 
@@ -25,11 +27,23 @@ class GuessesController < ApplicationController
   # POST /guesses.json
   def create
     @guess = Guess.new(guess_params)
+    @card = Card.find(guess_params[:card_id]);
+    @round = Round.find(guess_params[:round_id])
 
     respond_to do |format|
       if @guess.save
-        format.html { redirect_to @guess, notice: 'Guess was successfully created.' }
-        format.json { render :show, status: :created, location: @guess }
+        # check if the guess was correct - wil return true or false and save it in result
+        result = @card.check_guess(@guess)
+        
+        if result == true
+          #guess was correct
+          #remove the card from the @round.cards
+          binding.pry
+          @round.cards.delete(@card.id)
+          binding.pry
+          #pick a random card_id from the @round.cards and redirect there
+          format.html { redirect_to @decks, notice: 'Guess was successfully created.' }
+        end
       else
         format.html { render :new }
         format.json { render json: @guess.errors, status: :unprocessable_entity }
@@ -69,6 +83,6 @@ class GuessesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def guess_params
-      params.require(:guess).permit(:correct)
+      params.require(:guess).permit(:text, :card_id, :round_id)
     end
 end

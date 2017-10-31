@@ -10,7 +10,6 @@
   <%= @deck.description %>
 </p>
 
-<%= link_to 'Edit', edit_deck_path(@deck) %> |
 <%= link_to 'Back', decks_path %>
 
-<%= link_to 'Play this Deck', play_deck_path(@deck) %>
+<%= link_to 'Play this Deck', setup_game_path(@deck) %>

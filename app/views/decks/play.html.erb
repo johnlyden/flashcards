@@ -1,0 +1,22 @@
+<!-- show the Deck title -->
+<h2><%= @deck.name %></h2>
+<!-- 
+# show the number of guesses and the number of correct guesses
+-->
+<p>Question:</p>
+
+
+<!--
+
+# show the first question
+
+# need a form to answer the question and submit
+    # need a POST route to go to to check if that card's answer is correct
+        # when we check if the guess is correct we create a new Guess (card_id, round_id, correct)
+
+# after the POST response comes back as correct or incorrect we need to:
+    # update the number of correct guesses
+    # update the total number of guesses
+    # until the number of correct guesses is equal to the number of cards in the deck, we must keep cycling through the cards that were wrong
+
+-->

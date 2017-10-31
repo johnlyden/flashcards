@@ -10,7 +10,9 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'decks#index'
 
-  get 'deck/:id/play' => 'decks#play', as: :play_deck
+  get 'decks/:id/setup' => 'decks#setup_game', as: :setup_game
+  get 'cards/:id/play/:round_id' => 'cards#play_card', as: :play_card
+  # post 'cards/:id/check' => 'cards#check', as :check_card
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

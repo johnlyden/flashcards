@@ -12,53 +12,16 @@ class DecksController < ApplicationController
   def show
   end
 
-  # GET /decks/new
-  def new
-    @deck = Deck.new
-  end
+  # happens when we GET '/decks/:id/setup'
+  def setup_game
+    @deck = Deck.find(params[:id]) 
+    @user = User.first
+    @round = Round.create({user_id: @user.id, deck_id: @deck.id})
+    
+    # adds all fo the card id's to an array stored in the round
+    @round.setup(@deck)
 
-  # GET /decks/1/edit
-  def edit
-  end
-
-  # POST /decks
-  # POST /decks.json
-  def create
-    @deck = Deck.new(deck_params)
-
-    respond_to do |format|
-      if @deck.save
-        format.html { redirect_to @deck, notice: 'Deck was successfully created.' }
-        format.json { render :show, status: :created, location: @deck }
-      else
-        format.html { render :new }
-        format.json { render json: @deck.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /decks/1
-  # PATCH/PUT /decks/1.json
-  def update
-    respond_to do |format|
-      if @deck.update(deck_params)
-        format.html { redirect_to @deck, notice: 'Deck was successfully updated.' }
-        format.json { render :show, status: :ok, location: @deck }
-      else
-        format.html { render :edit }
-        format.json { render json: @deck.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /decks/1
-  # DELETE /decks/1.json
-  def destroy
-    @deck.destroy
-    respond_to do |format|
-      format.html { redirect_to decks_url, notice: 'Deck was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    redirect_to "/cards/#{@deck.cards.first.id}/play/#{@round.id}"
   end
 
   private
