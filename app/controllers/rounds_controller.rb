@@ -2,70 +2,19 @@ require 'pry'
 class RoundsController < ApplicationController
   before_action :set_round, only: [:show, :edit, :update, :destroy]
 
-  # GET /rounds
-  # GET /rounds.json
-  def index
-    @rounds = Round.all
-  end
-
+  # this method will render a view that shows the user's results from playing the flashcard deck
+  # this method is triggered by hitting the following route in config/routes.rb:
+  # get 'rounds/:id/results' => 'rounds#show_results', as: :show_results
   def show_results
+    # find the round we just played so we can pull information from it, i.e. guesses and the how many cards were in the deck
     @round = Round.find(params[:id])
+    # use the round to calculate the score, using cards and guesses.  this computes the average.  i.e. (# of cards / # of guesses)
+    # adding .to_f to both of these numbers.  this will make them into decimals, i.e. 5 => 5.0
+    # ruby only gives you back a decimal if you divide decimals.
+    # 5/4 => 1  but 5.0/4.0 => 1.25
     @score = @round.deck.cards.length.to_f / @round.guesses.length.to_f * 100 
+    # render the results view which will show your score. found in 'views/rounds/results'
     render "rounds/results"
-  end
-  # GET /rounds/1
-  # GET /rounds/1.json
-  def show
-  end
-
-  # GET /rounds/new
-  def new
-    @round = Round.new
-  end
-
-  # GET /rounds/1/edit
-  def edit
-  end
-
-
-  # POST /rounds
-  # POST /rounds.json
-  def create
-    @round = Round.new(round_params)
-
-    respond_to do |format|
-      if @round.save
-        format.html { redirect_to @round, notice: 'Round was successfully created.' }
-        format.json { render :show, status: :created, location: @round }
-      else
-        format.html { render :new }
-        format.json { render json: @round.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /rounds/1
-  # PATCH/PUT /rounds/1.json
-  def update
-    respond_to do |format|
-      if @round.update(round_params)
-        format.html { redirect_to @round, notice: 'Round was successfully updated.' }
-        format.json { render :show, status: :ok, location: @round }
-      else
-        format.html { render :edit }
-        format.json { render json: @round.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /rounds/1
-  # DELETE /rounds/1.json
-  def destroy
-    @round.destroy
-    respond_to do |format|
-      format.html { redirect_to rounds_url, notice: 'Round was successfully destroyed.' }
-      format.json { head :no_content }
-    end
   end
 
   private
