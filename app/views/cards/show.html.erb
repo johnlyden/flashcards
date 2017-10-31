@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Question:</strong>
+  <%= @card.question %>
+</p>
+
+<p>
+  <strong>Answer:</strong>
+  <%= @card.answer %>
+</p>
+
+<%= form_for(@guess) do |f| %>
+
+  <div class="field">
+    <%= f.label :text %><br>
+    <%= f.text_field :text %>
+    <%= f.hidden_field :card_id, :value => @card.id %>
+    <%= f.hidden_field :round_id, :value => @round.id %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

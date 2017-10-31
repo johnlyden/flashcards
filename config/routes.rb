@@ -1,9 +1,18 @@
 Rails.application.routes.draw do
+  resources :rounds
+  resources :guesses
+  resources :cards
+  resources :decks, only: [:index, :show, :edit, :new]
+  resources :users
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  # root 'welcome#index'
+  root 'decks#index'
+
+  get 'decks/:id/setup' => 'decks#setup_game', as: :setup_game
+  get 'cards/:id/play/:round_id' => 'cards#play_card', as: :play_card
+  # post 'cards/:id/check' => 'cards#check', as :check_card
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
